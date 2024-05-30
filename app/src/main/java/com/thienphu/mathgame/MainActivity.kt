@@ -10,6 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavArgument
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.thienphu.mathgame.ui.theme.MathGameTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +37,26 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyNavigation(){
+fun MyNavigation() {
+    val navHostController: NavHostController = rememberNavController()
+    NavHost(navController = navHostController, startDestination = "FirstPage") {
+        composable("FirstPage") {
+            FirstPage(navController = navHostController)
+        }
+        composable(
+            "SecondPage/{category}",
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ) {
+            val selectedCategory = it.arguments?.getString("category")
+            selectedCategory?.let { category ->
+                SecondPage(
+                    navController = navHostController,
+                    category = category
+                )
+            }
+
+        }
+    }
 
 }
 

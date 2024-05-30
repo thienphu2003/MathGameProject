@@ -66,6 +66,11 @@ fun FirstPage(navController: NavController) {
                 ), shape = RoundedCornerShape(20.dp), modifier = Modifier.size(250.dp,100.dp)) {
                     Text(text = "Subtraction", color = Color.White, fontSize = 24.sp)
                 }
+                Button(onClick = { navController.navigate("SecondPage/multi")} , colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.green)
+                ), shape = RoundedCornerShape(20.dp), modifier = Modifier.size(250.dp,100.dp)) {
+                    Text(text = "Multiplication", color = Color.White, fontSize = 24.sp)
+                }
                 Button(onClick = { navController.navigate("SecondPage/div")} , colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.green)
                 ), shape = RoundedCornerShape(20.dp), modifier = Modifier.size(250.dp,100.dp)) {
