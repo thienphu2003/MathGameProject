@@ -1,6 +1,7 @@
 package com.thienphu.mathgame
 
 
+import android.os.CountDownTimer
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,6 +72,31 @@ fun SecondPage(navController: NavController, category: String) {
 
     val correctAnswer = remember {
         mutableIntStateOf(0)
+    }
+
+    val totalTimeInMillis = remember {
+        when(category){
+            "multi"-> mutableLongStateOf(21000L)
+            else -> mutableLongStateOf(11000L)
+        }
+    }
+
+    val timer = remember {
+        mutableStateOf(
+            object : CountDownTimer(totalTimeInMillis.longValue,1000){
+                override fun onTick(millisUntilFinished: Long) {
+                    remainingTimeText.value = String.format(Locale.getDefault(),"%02d",millisUntilFinished/1000)
+                }
+
+                override fun onFinish() {
+                    cancel()
+                    myQuestion.value = "Sorry, Time is up!"
+                    life.intValue -=1
+                    isEnable.value = false
+                }
+
+            }.start()
+        )
     }
 
     LaunchedEffect(key1 = "math") {
@@ -145,6 +173,7 @@ fun SecondPage(navController: NavController, category: String) {
                         if(myAnswer.value.isEmpty()){
                             Toast.makeText(context,"Write an answer or click the next button",Toast.LENGTH_SHORT).show()
                         }else {
+                            timer.value.cancel()
 
                             if(myAnswer.value.toInt() === correctAnswer.intValue){
                                 score.value +=10
@@ -157,6 +186,8 @@ fun SecondPage(navController: NavController, category: String) {
                         }
                     }, isEnabled = isEnable.value)
                     ButtonOkNext(buttonText = "Next", myOnclick = {
+                        timer.value.cancel()
+                        timer.value.start()
 
                         if(life.value === 0){
                             Toast.makeText(context,"Game over!!!",Toast.LENGTH_SHORT).show()

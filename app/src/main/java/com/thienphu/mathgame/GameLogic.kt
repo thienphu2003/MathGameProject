@@ -3,8 +3,8 @@ package com.thienphu.mathgame
 import kotlin.random.Random
 
 fun generateQuestion(selectedCategory: String) : ArrayList<Any>{
-    val number1 = Random.nextInt(0,100)
-    val number2= Random.nextInt(0,100)
+    var number1 = Random.nextInt(0,100)
+    var number2= Random.nextInt(0,100)
 
     val textQuestion : String
     val correctAnswer : Int
@@ -24,6 +24,8 @@ fun generateQuestion(selectedCategory: String) : ArrayList<Any>{
             }
         }
         "multi" ->{
+            number1 = Random.nextInt(0,20)
+            number2 = Random.nextInt(0,20)
             textQuestion = "$number1 * $number2"
             correctAnswer = number1 * number2
         }
@@ -33,12 +35,12 @@ fun generateQuestion(selectedCategory: String) : ArrayList<Any>{
                 correctAnswer = 0
             }else if(number1>=number2){
                 val newNumber = number1 - (number1 % number2)
-                textQuestion = "$number1 / $number2"
-                correctAnswer = number1/number2
+                textQuestion = "$newNumber / $number2"
+                correctAnswer = newNumber/number2
             }else {
                 val newNumber = number2 - (number2%number1)
-                textQuestion = "$number2 / $number1"
-                correctAnswer = number2/number1
+                textQuestion = "$newNumber / $number1"
+                correctAnswer = newNumber/number1
             }
         }
     }
