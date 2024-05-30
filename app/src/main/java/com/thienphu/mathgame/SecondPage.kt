@@ -75,19 +75,20 @@ fun SecondPage(navController: NavController, category: String) {
     }
 
     val totalTimeInMillis = remember {
-        when(category){
-            "multi"-> mutableLongStateOf(26000L)
-            "div"-> mutableLongStateOf(26000L)
+        when (category) {
+            "multi" -> mutableLongStateOf(26000L)
+            "div" -> mutableLongStateOf(26000L)
             else -> mutableLongStateOf(16000L)
         }
     }
 
     val timer = remember {
         mutableStateOf(
-            object : CountDownTimer(totalTimeInMillis.longValue,1000){
+            object : CountDownTimer(totalTimeInMillis.longValue, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                    remainingTimeText.value = String.format(Locale.getDefault(),"%02d",millisUntilFinished/1000)
-                    if(!isEnable.value && myAnswer.value.isNotEmpty()){
+                    remainingTimeText.value =
+                        String.format(Locale.getDefault(), "%02d", millisUntilFinished / 1000)
+                    if (!isEnable.value && myAnswer.value.isNotEmpty()) {
                         isEnable.value = true
                     }
                 }
@@ -95,12 +96,19 @@ fun SecondPage(navController: NavController, category: String) {
                 override fun onFinish() {
                     cancel()
                     myQuestion.value = "Sorry, Time is up!"
-                    life.intValue -=1
+                    life.intValue -= 1
                     isEnable.value = false
                 }
 
             }.start()
         )
+    }
+
+    val totalQuestions = remember {
+        mutableIntStateOf(10)
+    }
+    val totalQuestionCount = remember {
+        mutableIntStateOf(1)
     }
 
     LaunchedEffect(key1 = "math") {
@@ -148,25 +156,77 @@ fun SecondPage(navController: NavController, category: String) {
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(50.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Text(text = "Life: ", fontSize = 20.sp, color = Color.DarkGray)
-                    Text(text = life.intValue.toString(), fontSize = 20.sp, color = Color.DarkGray)
-                    Text(text = "Score: ", fontSize = 20.sp, color = Color.DarkGray)
-                    Text(text = score.intValue.toString(), fontSize = 20.sp, color = Color.DarkGray)
-                    Text(text = "Time Remaining: ", fontSize = 20.sp, color = Color.DarkGray)
-                    Text(text = remainingTimeText.value, fontSize = 20.sp, color = Color.DarkGray)
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
+                    Column {
+                        Text(
+                            text = "Total question:",
+                            fontSize = 20.sp,
+                            color = Color.White,
+                        )
+                        Text(
+                            text = "Current question:",
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "Life:",
+                            fontSize = 20.sp,
+                            color = Color.White,
+
+                            )
+                        Text(
+                            text = "Score:",
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "Time Remaining:",
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+                    }
+                    Column(
+                    ) {
+                        Text(
+                            text = totalQuestions.intValue.toString(),
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+                        Text(
+                            text = totalQuestionCount.intValue.toString(),
+                            fontSize = 20.sp,
+                            color = Color.White,
+
+                            )
+                        Text(
+                            text = life.intValue.toString(),
+                            fontSize = 20.sp,
+                            color = Color.White,
+
+                            )
+
+                        Text(
+                            text = score.intValue.toString(),
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+
+                        Text(
+                            text = remainingTimeText.value,
+                            fontSize = 20.sp,
+                            color = Color.White
+                        )
+                    }
+
 
                 }
-                Spacer(modifier = Modifier.height(70.dp))
+
+                Spacer(modifier = Modifier.height(30.dp))
                 TextForQuestion(myQuestion.value)
                 Spacer(modifier = Modifier.height(30.dp))
                 TextFieldForAnswer(myAnswer)
-                Spacer(modifier = Modifier.height(70.dp))
+                Spacer(modifier = Modifier.height(40.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -174,33 +234,47 @@ fun SecondPage(navController: NavController, category: String) {
                 ) {
                     ButtonOkNext(buttonText = "OK", myOnclick = {
                         isEnable.value = false
-                        if(myAnswer.value.isEmpty()){
-                            Toast.makeText(context,"Write an answer or click the next button",Toast.LENGTH_SHORT).show()
-                        }else {
+                        if (myAnswer.value.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Write an answer or click the next button",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
                             timer.value.cancel()
 
-                            if(myAnswer.value.toInt() == correctAnswer.intValue){
-                                score.intValue +=10
+                            if (myAnswer.value.toInt() == correctAnswer.intValue) {
+                                score.intValue += 10
                                 myQuestion.value = "Congratulations!!!"
-                                myAnswer.value =""
-                            }else {
-                                life.intValue -=1
+                                myAnswer.value = ""
+                            } else {
+                                life.intValue -= 1
                                 myQuestion.value = "Sorry, your answer is wrong."
                             }
+
                         }
                     }, isEnabled = isEnable.value)
                     ButtonOkNext(buttonText = "Next", myOnclick = {
                         timer.value.cancel()
                         timer.value.start()
-
-                        if(life.intValue == 0){
-                            Toast.makeText(context,"Game over!!!",Toast.LENGTH_SHORT).show()
-                            navController.navigate("ResultPage/${score.intValue}"){
-                                popUpTo("FirstPage"){
+                        if (life.intValue == 0) {
+                            Toast.makeText(context, "Game over!!!", Toast.LENGTH_SHORT).show()
+                            navController.navigate("ResultPage/${score.intValue}") {
+                                popUpTo("FirstPage") {
                                     inclusive = false
                                 }
                             }
-                        }else {
+                        } else {
+                            if (totalQuestionCount.intValue == totalQuestions.intValue) {
+                                Toast.makeText(context, "Game finish!!!", Toast.LENGTH_SHORT).show()
+                                navController.navigate("ResultPage/${score.intValue}") {
+                                    popUpTo("FirstPage") {
+                                        inclusive = false
+                                    }
+                                }
+                            }else{
+                                totalQuestionCount.intValue += 1
+                            }
                             val newResultList = generateQuestion(category)
                             myQuestion.value = newResultList[0].toString()
                             correctAnswer.intValue = newResultList[1].toString().toInt()
