@@ -35,7 +35,8 @@ fun TextForQuestion(text: String) {
                 colorResource(id = R.color.ice_blue)
             )
             .size(300.dp, 75.dp)
-            .wrapContentHeight()
+            .wrapContentHeight(),
+        color = Color.White
     )
 }
 

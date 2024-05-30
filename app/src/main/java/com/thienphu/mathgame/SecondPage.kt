@@ -76,8 +76,9 @@ fun SecondPage(navController: NavController, category: String) {
 
     val totalTimeInMillis = remember {
         when(category){
-            "multi"-> mutableLongStateOf(21000L)
-            else -> mutableLongStateOf(11000L)
+            "multi"-> mutableLongStateOf(26000L)
+            "div"-> mutableLongStateOf(26000L)
+            else -> mutableLongStateOf(16000L)
         }
     }
 
@@ -86,6 +87,9 @@ fun SecondPage(navController: NavController, category: String) {
             object : CountDownTimer(totalTimeInMillis.longValue,1000){
                 override fun onTick(millisUntilFinished: Long) {
                     remainingTimeText.value = String.format(Locale.getDefault(),"%02d",millisUntilFinished/1000)
+                    if(!isEnable.value && myAnswer.value.isNotEmpty()){
+                        isEnable.value = true
+                    }
                 }
 
                 override fun onFinish() {
@@ -176,11 +180,11 @@ fun SecondPage(navController: NavController, category: String) {
                             timer.value.cancel()
 
                             if(myAnswer.value.toInt() === correctAnswer.intValue){
-                                score.value +=10
+                                score.intValue +=10
                                 myQuestion.value = "Congratulations!!!"
                                 myAnswer.value =""
                             }else {
-                                life.value -=1
+                                life.intValue -=1
                                 myQuestion.value = "Sorry, your answer is wrong."
                             }
                         }
@@ -189,7 +193,7 @@ fun SecondPage(navController: NavController, category: String) {
                         timer.value.cancel()
                         timer.value.start()
 
-                        if(life.value === 0){
+                        if(life.intValue === 0){
                             Toast.makeText(context,"Game over!!!",Toast.LENGTH_SHORT).show()
                         }else {
                             val newResultList = generateQuestion(category)
