@@ -1,6 +1,7 @@
 package com.thienphu.mathgame
 
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -63,6 +66,19 @@ fun SecondPage(navController: NavController, category: String) {
     val isEnable = remember {
         mutableStateOf(true)
     }
+
+    val correctAnswer = remember {
+        mutableIntStateOf(0)
+    }
+
+    LaunchedEffect(key1 = "math") {
+        val resultList = generateQuestion(category)
+        myQuestion.value = resultList[0].toString()
+        correctAnswer.intValue = resultList[1].toString().toInt()
+    }
+
+    val context = LocalContext.current
+
 
     Scaffold(
         topBar = {
@@ -126,11 +142,31 @@ fun SecondPage(navController: NavController, category: String) {
                 ) {
                     ButtonOkNext(buttonText = "OK", myOnclick = {
                         isEnable.value = false
+                        if(myAnswer.value.isEmpty()){
+                            Toast.makeText(context,"Write an answer or click the next button",Toast.LENGTH_SHORT).show()
+                        }else {
 
+                            if(myAnswer.value.toInt() === correctAnswer.intValue){
+                                score.value +=10
+                                myQuestion.value = "Congratulations!!!"
+                                myAnswer.value =""
+                            }else {
+                                life.value -=1
+                                myQuestion.value = "Sorry, your answer is wrong."
+                            }
+                        }
                     }, isEnabled = isEnable.value)
                     ButtonOkNext(buttonText = "Next", myOnclick = {
-                        isEnable.value = true
 
+                        if(life.value === 0){
+                            Toast.makeText(context,"Game over!!!",Toast.LENGTH_SHORT).show()
+                        }else {
+                            val newResultList = generateQuestion(category)
+                            myQuestion.value = newResultList[0].toString()
+                            correctAnswer.intValue = newResultList[1].toString().toInt()
+                            myAnswer.value = ""
+                            isEnable.value = true
+                        }
                     }, isEnabled = true)
                 }
             }
