@@ -76,9 +76,9 @@ fun SecondPage(navController: NavController, category: String) {
 
     val totalTimeInMillis = remember {
         when (category) {
-            "multi" -> mutableLongStateOf(26000L)
-            "div" -> mutableLongStateOf(26000L)
-            else -> mutableLongStateOf(16000L)
+            "multi" -> mutableLongStateOf(21000L)
+            "div" -> mutableLongStateOf(21000L)
+            else -> mutableLongStateOf(11000L)
         }
     }
 
