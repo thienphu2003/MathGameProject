@@ -1,6 +1,8 @@
 package com.thienphu.mathgame
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.MarqueeSpacing
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -67,12 +69,21 @@ fun FirstPage(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                Column(modifier =Modifier.width(400.dp)) {
+                Column(modifier = Modifier.width(400.dp)) {
                     Text(
                         "WELCOME TO MY MATH GAME !!!",
-                        modifier = Modifier.basicMarquee(),
+                        modifier = Modifier
+                            .basicMarquee(
+                                spacing = MarqueeSpacing(30.dp),
+                                velocity = 70.dp,
+                                delayMillis = 0,
+                                iterations = Int.MAX_VALUE
+                            )
+                            .background(Color.DarkGray, shape = RoundedCornerShape(10.dp))
+                            .padding(10.dp),
                         fontSize = 50.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     )
                 }
 
