@@ -50,7 +50,7 @@ fun FirstPage(navController: NavController) {
                     .fillMaxSize()
                     .padding(paddingValues)
                     .paint(
-                        painter = painterResource(id = R.drawable.image_2),
+                        painter = painterResource(id = R.drawable.first),
                         contentScale = ContentScale.FillBounds
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,22 +59,22 @@ fun FirstPage(navController: NavController) {
                 Button(onClick = { navController.navigate("SecondPage/add")} , colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.green)
                 ), shape = RoundedCornerShape(20.dp), modifier = Modifier.size(250.dp,100.dp)) {
-                    Text(text = "Addition", color = Color.White, fontSize = 24.sp)
+                    Text(text = "Addition", color = Color.White, fontSize = 30.sp)
                 }
                 Button(onClick = { navController.navigate("SecondPage/sub")} , colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.green)
                 ), shape = RoundedCornerShape(20.dp), modifier = Modifier.size(250.dp,100.dp)) {
-                    Text(text = "Subtraction", color = Color.White, fontSize = 24.sp)
+                    Text(text = "Subtraction", color = Color.White, fontSize = 30.sp)
                 }
                 Button(onClick = { navController.navigate("SecondPage/multi")} , colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.green)
                 ), shape = RoundedCornerShape(20.dp), modifier = Modifier.size(250.dp,100.dp)) {
-                    Text(text = "Multiplication", color = Color.White, fontSize = 24.sp)
+                    Text(text = "Multiplication", color = Color.White, fontSize = 30.sp)
                 }
                 Button(onClick = { navController.navigate("SecondPage/div")} , colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.green)
                 ), shape = RoundedCornerShape(20.dp), modifier = Modifier.size(250.dp,100.dp)) {
-                    Text(text = "Division", color = Color.White, fontSize = 24.sp)
+                    Text(text = "Division", color = Color.White, fontSize = 30.sp)
                 }
             }
         }

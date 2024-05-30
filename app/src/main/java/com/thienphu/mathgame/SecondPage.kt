@@ -143,7 +143,7 @@ fun SecondPage(navController: NavController, category: String) {
                     .fillMaxSize()
                     .padding(paddingValues)
                     .paint(
-                        painterResource(id = R.drawable.image_3),
+                        painterResource(id = R.drawable.second),
                         contentScale = ContentScale.FillBounds
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -179,7 +179,7 @@ fun SecondPage(navController: NavController, category: String) {
                         }else {
                             timer.value.cancel()
 
-                            if(myAnswer.value.toInt() === correctAnswer.intValue){
+                            if(myAnswer.value.toInt() == correctAnswer.intValue){
                                 score.intValue +=10
                                 myQuestion.value = "Congratulations!!!"
                                 myAnswer.value =""
@@ -193,8 +193,13 @@ fun SecondPage(navController: NavController, category: String) {
                         timer.value.cancel()
                         timer.value.start()
 
-                        if(life.intValue === 0){
+                        if(life.intValue == 0){
                             Toast.makeText(context,"Game over!!!",Toast.LENGTH_SHORT).show()
+                            navController.navigate("ResultPage/${score.intValue}"){
+                                popUpTo("FirstPage"){
+                                    inclusive = false
+                                }
+                            }
                         }else {
                             val newResultList = generateQuestion(category)
                             myQuestion.value = newResultList[0].toString()

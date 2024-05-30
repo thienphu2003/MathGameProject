@@ -56,6 +56,17 @@ fun MyNavigation() {
             }
 
         }
+        composable(
+            "ResultPage/{score}",
+            arguments = listOf(navArgument("score") { type = NavType.IntType })
+        ) {
+            val userScore = it.arguments?.getInt("score")
+            userScore?.let { score ->
+                ResultPage(navController = navHostController, score = score)
+            }
+
+        }
+
     }
 
 }

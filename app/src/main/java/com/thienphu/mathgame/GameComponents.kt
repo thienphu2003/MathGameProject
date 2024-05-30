@@ -32,7 +32,7 @@ fun TextForQuestion(text: String) {
     Text(
         text = text, fontSize = 30.sp, textAlign = TextAlign.Center, modifier = Modifier
             .background(
-                colorResource(id = R.color.ice_blue)
+                colorResource(id = R.color.blue)
             )
             .size(300.dp, 75.dp)
             .wrapContentHeight(),
@@ -52,7 +52,7 @@ fun TextFieldForAnswer(text: MutableState<String>) {
         unfocusedLabelColor = Color.White,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
-        containerColor = colorResource(id = R.color.ice_blue),
+        containerColor = colorResource(id = R.color.blue),
         cursorColor = Color.White,
         focusedTextColor = Color.White,
     ), modifier = Modifier.size(300.dp, 75.dp),
